@@ -1,154 +1,244 @@
-# Project Setup Guide
+# DocBot - AI-Powered Medical Assistant 🩺
 
-This guide provides step-by-step instructions to set up your project environment, including the installation of FFmpeg and PortAudio across macOS, Linux, and Windows, as well as setting up a Python virtual environment using Pipenv, pip, or conda.
+DocBot is an intelligent medical assistant that combines computer vision, speech recognition, and natural language processing to provide AI-powered medical consultations. The application can analyze medical images, process voice queries, and respond with synthesized speech, creating an interactive healthcare experience.
 
-## Table of Contents
+## 🌟 Features
 
-1. [Installing FFmpeg and PortAudio](#installing-ffmpeg-and-portaudio)
-   - [macOS](#macos)
-   - [Linux](#linux)
-   - [Windows](#windows)
-2. [Setting Up a Python Virtual Environment](#setting-up-a-python-virtual-environment)
-   - [Using Pipenv](#using-pipenv)
-   - [Using pip and venv](#using-pip-and-venv)
-   - [Using Conda](#using-conda)
-3. [Running the application](#project-phases-and-python-commands)
+- **Voice-to-Text Processing**: Record voice queries and convert them to text using Whisper
+- **Medical Image Analysis**: Analyze medical images using advanced vision models
+- **AI Medical Consultation**: Get AI-powered medical advice and differential diagnoses
+- **Text-to-Speech**: Hear responses in natural-sounding voice using gTTS or ElevenLabs
+- **Interactive Web Interface**: User-friendly Gradio-based web application
+- **Multi-Platform Support**: Works on Windows, macOS, and Linux
 
-## Installing FFmpeg and PortAudio
+## 🚀 Demo
 
-### macOS
+The application provides a web interface where users can:
+1. Upload medical images (skin conditions, X-rays, etc.)
+2. Record voice queries about their symptoms
+3. Receive AI-powered medical analysis and suggestions
+4. Listen to the response via text-to-speech
 
-1. **Install Homebrew** (if not already installed):
+## 🛠️ Tech Stack
 
-   ```bash
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-   ```
+### Core Technologies
+- **Python 3.11**: Primary programming language
+- **Gradio**: Web interface framework
+- **GROQ API**: LLM inference and speech-to-text processing
+- **ElevenLabs**: Premium text-to-speech synthesis
+- **gTTS**: Google Text-to-Speech (fallback option)
 
-2. **Install FFmpeg and PortAudio:**
+### AI/ML Models
+- **Whisper Large V3**: Speech recognition model
+- **Llama 4 Scout 17B**: Vision-language model for medical analysis
+- **Aria Voice (ElevenLabs)**: Natural voice synthesis
 
-   ```bash
-   brew install ffmpeg portaudio
-   ```
+### Audio Processing
+- **PyAudio**: Audio input/output
+- **SpeechRecognition**: Voice recording and processing
+- **Pydub**: Audio file manipulation
+- **FFmpeg**: Audio codec support
 
+### Additional Libraries
+- **Pillow**: Image processing
+- **Requests**: HTTP client
+- **NumPy/Pandas**: Data manipulation
+- **FastAPI**: Backend API framework
 
-### Linux
-For Debian-based distributions (e.g., Ubuntu):
+## 📋 Prerequisites
 
-1. **Update the package list**
+Before setting up DocBot, ensure you have:
 
+1. **Python 3.11** or higher
+2. **API Keys**:
+   - GROQ API key (for LLM and speech processing)
+   - ElevenLabs API key (for premium voice synthesis)
+3. **System Dependencies**:
+   - FFmpeg (for audio processing)
+   - PortAudio (for microphone access)
+
+## 🔧 Installation & Setup
+
+### Step 1: System Dependencies
+
+#### macOS
+```bash
+# Install Homebrew (if not already installed)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install FFmpeg and PortAudio
+brew install ffmpeg portaudio
 ```
+
+#### Linux (Ubuntu/Debian)
+```bash
+# Update package list
 sudo apt update
-```
 
-2. **Install FFmpeg and PortAudio:**
-```
+# Install FFmpeg and PortAudio
 sudo apt install ffmpeg portaudio19-dev
 ```
 
-### Windows
+#### Windows
+1. **Download FFmpeg**:
+   - Visit [FFmpeg Downloads](https://ffmpeg.org/download.html)
+   - Download the latest static build for Windows
 
-#### Download FFmpeg:
-1. Visit the official FFmpeg download page: [FFmpeg Downloads](https://ffmpeg.org/download.html)
-2. Navigate to the Windows builds section and download the latest static build.
+2. **Extract and Set Up FFmpeg**:
+   - Extract ZIP file to `C:\ffmpeg`
+   - Add `C:\ffmpeg\bin` to system PATH:
+     - Search "Environment Variables" in Start menu
+     - Edit system environment variables
+     - Add path to System PATH variable
 
-#### Extract and Set Up FFmpeg:
-1. Extract the downloaded ZIP file to a folder (e.g., `C:\ffmpeg`).
-2. Add the `bin` directory to your system's PATH:
-   - Search for "Environment Variables" in the Start menu.
-   - Click on "Edit the system environment variables."
-   - In the System Properties window, click on "Environment Variables."
-   - Under "System variables," select the "Path" variable and click "Edit."
-   - Click "New" and add the path to the `bin` directory (e.g., `C:\ffmpeg\bin`).
-   - Click "OK" to apply the changes.
+3. **Install PortAudio**:
+   - Download from [PortAudio Downloads](http://www.portaudio.com/download.html)
+   - Follow installation instructions
 
-#### Install PortAudio:
-1. Download the PortAudio binaries from the official website: [PortAudio Downloads](http://www.portaudio.com/download.html)
-2. Follow the installation instructions provided on the website.
+### Step 2: API Keys Setup
 
----
+Create a `.env` file in the project root and add your API keys:
 
-## Setting Up a Python Virtual Environment
-
-### Using Pipenv
-1. **Install Pipenv (if not already installed):**  
+```env
+GROQ_API_KEY=your_groq_api_key_here
+ELEVEN_API_KEY=your_elevenlabs_api_key_here
 ```
+
+**How to get API keys:**
+- **GROQ API**: Sign up at [console.groq.com](https://console.groq.com) and create an API key
+- **ElevenLabs API**: Sign up at [elevenlabs.io](https://elevenlabs.io) and get your API key from the profile section
+
+### Step 3: Python Environment Setup
+
+Choose one of the following methods:
+
+#### Option 1: Using Pipenv (Recommended)
+```bash
+# Install Pipenv
 pip install pipenv
-```
 
-2. **Install Dependencies with Pipenv:** 
-
-```
+# Install dependencies
 pipenv install
-```
 
-3. **Activate the Virtual Environment:** 
-
-```
+# Activate virtual environment
 pipenv shell
 ```
 
----
-
-### Using `pip` and `venv`
-#### Create a Virtual Environment:
-```
+#### Option 2: Using pip and venv
+```bash
+# Create virtual environment
 python -m venv venv
-```
 
-#### Activate the Virtual Environment:
-**macOS/Linux:**
-```
-source venv/bin/activate
-```
-
-**Windows:**
-```
+# Activate virtual environment
+# On Windows:
 venv\Scripts\activate
-```
+# On macOS/Linux:
+source venv/bin/activate
 
-#### Install Dependencies:
-```
+# Install dependencies
 pip install -r requirements.txt
 ```
 
----
+#### Option 3: Using Conda
+```bash
+# Create conda environment
+conda create --name docbot python=3.11
 
-### Using Conda
-#### Create a Conda Environment:
-```
-conda create --name myenv python=3.11
-```
+# Activate environment
+conda activate docbot
 
-#### Activate the Conda Environment:
-```
-conda activate myenv
-```
-
-#### Install Dependencies:
-```
+# Install dependencies
 pip install -r requirements.txt
 ```
 
+## 🚀 Usage
 
-# Project Phases and Python Commands
+### Quick Start
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/KARTIKEY-KATYAL/DocBot.git
+   cd DocBot
+   ```
 
-## Phase 1: Brain of the doctor
-```
+2. **Set up environment** (follow installation steps above)
+
+3. **Run the application**:
+   ```bash
+   python gradio_app.py
+   ```
+
+4. **Open your browser** and go to `http://127.0.0.1:7860`
+
+### Application Components
+
+DocBot consists of several modular components that can be run independently:
+
+#### 1. Brain of the Doctor (`brain_of_the_doctor.py`)
+- Handles image processing and medical analysis
+- Uses vision-language models to analyze medical images
+- Provides differential diagnoses and treatment suggestions
+
+```bash
 python brain_of_the_doctor.py
 ```
 
-## Phase 2: Voice of the patient
-```
+#### 2. Voice of the Patient (`voice_of_the_patient.py`)
+- Records and processes voice input
+- Converts speech to text using Whisper
+- Handles microphone input and audio processing
+
+```bash
 python voice_of_the_patient.py
 ```
 
-## Phase 3: Voice of the doctor
-```
+#### 3. Voice of the Doctor (`voice_of_the_doctor.py`)
+- Converts AI responses to speech
+- Supports both gTTS and ElevenLabs TTS
+- Handles audio playback across platforms
+
+```bash
 python voice_of_the_doctor.py
 ```
 
-## Phase 4: Setup Gradio UI
-```
+#### 4. Gradio Web Interface (`gradio_app.py`)
+- Complete web-based application
+- Integrates all components into a user-friendly interface
+- Provides real-time interaction with the AI doctor
+
+```bash
 python gradio_app.py
 ```
+
+## 📖 How It Works
+
+1. **Image Upload**: User uploads a medical image (skin condition, X-ray, etc.)
+2. **Voice Query**: User records their symptoms and questions
+3. **AI Analysis**: The system processes both inputs using advanced AI models
+4. **Medical Response**: AI provides analysis, potential diagnoses, and recommendations
+5. **Voice Output**: Response is converted to speech and played back to the user
+
+## 🔒 Disclaimer
+
+⚠️ **Important**: This application is for educational and demonstration purposes only. It should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always consult with qualified healthcare professionals for medical concerns.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 👨‍💻 Author
+
+**Kartikey Katyal**
+- GitHub: [@KARTIKEY-KATYAL](https://github.com/KARTIKEY-KATYAL)
+
+## 🐛 Issues
+
+If you encounter any problems or have suggestions, please [open an issue](https://github.com/KARTIKEY-KATYAL/DocBot/issues) on GitHub.
+
+---
+
+*Built with ❤️ by Kartikey Katyal *
 
